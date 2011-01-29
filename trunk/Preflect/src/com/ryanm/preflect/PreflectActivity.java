@@ -30,6 +30,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 /**
+ * Remember to declare this activity in your AndroidManifest.xml
+ * 
  * @author ryanm
  */
 public class PreflectActivity extends PreferenceActivity
