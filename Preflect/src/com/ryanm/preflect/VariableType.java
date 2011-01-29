@@ -45,7 +45,7 @@ public abstract class VariableType<T>
 	/**
 	 * @param type
 	 */
-	VariableType( Class<? extends T> type )
+	protected VariableType( Class<? extends T> type )
 	{
 		this.type = type;
 	}
@@ -195,7 +195,7 @@ public abstract class VariableType<T>
 	 * @param type
 	 * @return A factory for the type
 	 */
-	public static VariableType get( Class type )
+	static VariableType get( Class type )
 	{
 		VariableType t = types.get( type );
 
