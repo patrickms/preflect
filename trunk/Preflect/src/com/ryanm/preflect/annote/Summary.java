@@ -7,6 +7,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import android.preference.Preference;
+
 /**
  * Used to add a descriptive string to a {@link Variable}
  * 
@@ -18,7 +20,8 @@ import java.lang.annotation.Target;
 public @interface Summary
 {
 	/**
-	 * The description for the variable or type
+	 * The description for the variable or type. This value is passed
+	 * to {@link Preference#setSummary(CharSequence)}
 	 */
 	String value();
 }

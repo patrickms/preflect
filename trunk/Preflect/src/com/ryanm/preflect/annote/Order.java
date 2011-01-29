@@ -8,6 +8,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import android.preference.Preference;
+
 /**
  * Annotation for ordering {@link Variable}s. Variables without order
  * values are sorted alphabetically after those with. The order of a
@@ -23,8 +25,8 @@ import java.lang.annotation.Target;
 public @interface Order
 {
 	/**
-	 * The order of the variable. Lower numbers appear at the top of
-	 * the list
+	 * The order of the variable. Lower numbers appear first in the
+	 * list. This value is passed to {@link Preference#setOrder(int)}
 	 */
 	int value();
 }
