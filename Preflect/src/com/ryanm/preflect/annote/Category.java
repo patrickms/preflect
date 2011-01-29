@@ -8,6 +8,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import android.preference.PreferenceCategory;
+
 /**
  * Annotation for grouping {@link Variable}s
  * 
@@ -20,7 +22,8 @@ import java.lang.annotation.Target;
 public @interface Category
 {
 	/**
-	 * The name of the category
+	 * The name of the category. This value is passed into
+	 * {@link PreferenceCategory#setTitle(CharSequence)}
 	 */
 	String value();
 }
