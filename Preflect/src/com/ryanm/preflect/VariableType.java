@@ -45,7 +45,7 @@ public abstract class VariableType<T>
 	/**
 	 * @param type
 	 */
-	protected VariableType( Class<? extends T> type )
+	VariableType( Class<? extends T> type )
 	{
 		this.type = type;
 	}
