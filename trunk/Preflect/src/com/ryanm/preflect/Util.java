@@ -4,6 +4,7 @@ package com.ryanm.preflect;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -161,7 +162,16 @@ class Util
 
 		Variable v = f.getAnnotation( Variable.class );
 
-		if( v != null )
+		if( v != null && Preflect.errorOnNonPublicVariables
+				&& !Modifier.isPublic( f.getModifiers() ) )
+		{
+			throw new StructuralError( "Non-public variable encountered : "
+					+ f.getDeclaringClass() + "." + f.getName()
+					+ "\n Set Preflect.errorOnNonPublicVariables "
+					+ "to false to suppress this error" );
+		}
+
+		if( v != null && Modifier.isPublic( f.getModifiers() ) )
 		{
 			name = v.value();
 

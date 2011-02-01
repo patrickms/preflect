@@ -40,8 +40,8 @@ class Extract
 			}
 			catch( Exception e )
 			{
-				Log.e( Preflect.LOG_TAG, "Trouble extracting configuration from "
-						+ roots[ 0 ], e );
+				Log.e( Preflect.LOG_TAG,
+						"Trouble extracting configuration from " + roots[ 0 ], e );
 			}
 		}
 		JSONObject json = new JSONObject();
@@ -77,7 +77,15 @@ class Extract
 			String name = Util.getName( f );
 			if( name != null )
 			{
-				conf.put( name, extractConfig( f, o ) );
+				if( conf.has( name ) )
+				{
+					throw new StructuralError( "Duplicate variable name \"" + name
+							+ "\" detected in " + o.getClass() );
+				}
+				else
+				{
+					conf.put( name, extractConfig( f, o ) );
+				}
 			}
 		}
 
@@ -119,7 +127,15 @@ class Extract
 					}
 				}
 
-				conf.put( name, extractConfig( o, m, n ) );
+				if( conf.has( name ) )
+				{
+					throw new StructuralError( "Duplicate variable name \"" + name
+							+ "\" detected in " + o.getClass() );
+				}
+				else
+				{
+					conf.put( name, extractConfig( o, m, n ) );
+				}
 			}
 		}
 
@@ -226,15 +242,17 @@ class Extract
 			if( setter.getReturnType() != void.class
 					|| setter.getParameterTypes().length != 1 )
 			{
-				throw new StructuralError( "Setter method " + setter.getDeclaringClass() + "."
-						+ setter.getName() + " must have only one argument and a void return" );
+				throw new StructuralError( "Setter method " + setter.getDeclaringClass()
+						+ "." + setter.getName()
+						+ " must have only one argument and a void return" );
 			}
 
 			if( getter.getReturnType() == void.class
 					|| getter.getParameterTypes().length != 0 )
 			{
-				throw new StructuralError( "Getter method " + getter.getDeclaringClass() + "."
-						+ getter.getName() + " must have zero arguments and a non-void return" );
+				throw new StructuralError( "Getter method " + getter.getDeclaringClass()
+						+ "." + getter.getName()
+						+ " must have zero arguments and a non-void return" );
 			}
 
 			if( getter.getReturnType() != setter.getParameterTypes()[ 0 ] )

@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
  * <ul>
  * <li>Must be <code>public</code>
  * <li>Will take the supplied name value, or the value of the type's
- * {@link Variable} annotation, or the type name if both are left
+ * {@link Variable} annotation, or the field name if both are left
  * blank
  * </ul>
  * <p>
