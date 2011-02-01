@@ -22,6 +22,15 @@ import com.ryanm.preflect.annote.Variable;
 public class Preflect
 {
 	/**
+	 * When <code>true</code>, a {@link StructuralError} will be thrown
+	 * if a private field or method is encountered with a
+	 * {@link Variable} annotation, when <code>false</code>, no error
+	 * is raised and the variable is ignored. Default value is
+	 * <code>true</code>
+	 */
+	public static final boolean errorOnNonPublicVariables = true;
+
+	/**
 	 * Logging tag
 	 */
 	public static final String LOG_TAG = "Preflect";
