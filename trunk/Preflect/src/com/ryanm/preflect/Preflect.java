@@ -35,10 +35,6 @@ public class Preflect
 	 */
 	public static final String LOG_TAG = "Preflect";
 
-	private static final String CONF_TAG = "conf";
-
-	private static final String RETURNTO_TAG = "returnto";
-
 	/**
 	 * The activity request flag used in
 	 * {@link Activity#startActivityForResult(Intent, int)} when
@@ -73,8 +69,8 @@ public class Preflect
 			Log.i( LOG_TAG, "Launching configuration activity" );
 
 			Intent i = new Intent( returnTo, PreflectActivity.class );
-			i.putExtra( CONF_TAG, Extract.extract( roots ).toString() );
-			i.putExtra( RETURNTO_TAG, returnTo.getClass().getName() );
+			i.putExtra( Util.CONF_TAG, Extract.extract( roots ).toString() );
+			i.putExtra( Util.RETURNTO_TAG, returnTo.getClass().getName() );
 			returnTo.startActivityForResult( i, ACTIVITY_REQUEST_FLAG );
 		}
 	}
@@ -108,7 +104,7 @@ public class Preflect
 			Log.i( LOG_TAG, "Applying configuration" );
 			try
 			{
-				Apply.apply( new JSONObject( data.getStringExtra( CONF_TAG ) ), configTargets );
+				Apply.apply( new JSONObject( data.getStringExtra( Util.CONF_TAG ) ), configTargets );
 			}
 			catch( JSONException e )
 			{
@@ -142,13 +138,13 @@ public class Preflect
 				Log.i( LOG_TAG, "Deferring configuration" );
 				try
 				{
-					JSONObject json = new JSONObject( data.getStringExtra( CONF_TAG ) );
+					JSONObject json = new JSONObject( data.getStringExtra( Util.CONF_TAG ) );
 					deferredResults.add( new ConfigResult( json ) );
 				}
 				catch( JSONException e )
 				{
 					Log.e( LOG_TAG,
-							"Problem parsing json data : " + data.getStringExtra( CONF_TAG ), e );
+							"Problem parsing json data : " + data.getStringExtra( Util.CONF_TAG ), e );
 				}
 			}
 		}

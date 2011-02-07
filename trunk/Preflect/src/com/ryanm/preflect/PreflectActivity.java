@@ -52,8 +52,8 @@ public class PreflectActivity extends PreferenceActivity
 	{
 		super.onCreate( savedInstanceState );
 
-		String input = ( String ) getIntent().getSerializableExtra( "conf" );
-		returnTo = ( String ) getIntent().getSerializableExtra( "returnTo" );
+		String input = ( String ) getIntent().getSerializableExtra( Util.CONF_TAG );
+		returnTo = ( String ) getIntent().getSerializableExtra( Util.RETURNTO_TAG );
 
 		try
 		{
