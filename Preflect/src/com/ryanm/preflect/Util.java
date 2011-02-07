@@ -11,6 +11,7 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.ryanm.preflect.annote.Category;
@@ -60,6 +61,17 @@ class Util
 	 * JSON key for a boolean that indicates a variable is read-only
 	 */
 	static final String READ_ONLY = "readonly";
+
+	/**
+	 * Tag for the configuration string in the {@link Intent}
+	 */
+	static final String CONF_TAG = "conf";
+
+	/**
+	 * Tag for the name of the activity that started the
+	 * {@link PreflectActivity} in the {@link Intent}
+	 */
+	static final String RETURNTO_TAG = "returnto";
 
 	private Util()
 	{
