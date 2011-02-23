@@ -73,7 +73,7 @@ public class Persist
 	 * @param savename
 	 *           The name of the save to delete
 	 */
-	public static void deleteSave( Activity owner, String savename )
+	public static void delete( Activity owner, String savename )
 	{
 		deleteSave( owner, owner.getClass().getName(), savename );
 	}
