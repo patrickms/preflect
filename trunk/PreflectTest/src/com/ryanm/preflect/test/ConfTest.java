@@ -22,7 +22,8 @@ public class ConfTest
 {
 	// @Variable( "Don't do this" )
 	// @Summary(
-	// "This will cause an infinite loop, tree structure only please" )
+	// "This will cause an infinite loop, ending in a StackOverflowException. Tree structure only please"
+	// )
 	// public ConfTest objectGraphLoop = this;
 
 	/***/
