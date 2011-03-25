@@ -57,29 +57,18 @@ public class Preflect
 	}
 
 	/**
-	 * Starts a configuration activity
-	 * 
-	 * @param returnTo
-	 *           The activity to return to when we are done configuring
-	 * @param roots
-	 *           The (annotated) objects to configure.
-	 */
-	public static void configure( Activity returnTo, Object... roots )
-	{
-		configure( returnTo, true, true, roots );
-	}
-
-	/**
 	 * @param returnTo
 	 *           The activity to return to when we are done configuring
 	 * @param showPersist
 	 *           When <code>true</code>, the user will be able manually
-	 *           save multiple different configurations. Default is
-	 *           <code>true</code>
+	 *           save multiple different configurations.
 	 * @param showConfirm
 	 *           When <code>true</code>, the user will have to confirm
 	 *           or cancel configuration changes before leaving the
-	 *           generated {@link PreferenceActivity}.
+	 *           generated {@link PreferenceActivity}. This might be
+	 *           useful if the preference hierarchy is deep, and the
+	 *           user risks prematurely leaving the activity by
+	 *           accident
 	 * @param roots
 	 *           The (annotated) objects to configure.
 	 */

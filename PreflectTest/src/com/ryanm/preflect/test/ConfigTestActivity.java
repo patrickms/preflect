@@ -48,7 +48,7 @@ public class ConfigTestActivity extends Activity
 	{
 		if( keyCode == KeyEvent.KEYCODE_MENU )
 		{
-			Preflect.configure( this, testy );
+			Preflect.configure( this, true, true, testy );
 
 			return true;
 		}
