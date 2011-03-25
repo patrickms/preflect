@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.preference.PreferenceActivity;
 import android.util.Log;
 
 import com.ryanm.preflect.annote.Variable;
@@ -28,7 +29,13 @@ public class Preflect
 	 * is raised and the variable is ignored. Default value is
 	 * <code>true</code>
 	 */
-	public static final boolean errorOnNonPublicVariables = true;
+	public static boolean errorOnNonPublicVariables = true;
+
+	/**
+	 * The name under which applied configurations are automatically
+	 * saved. Set to <code>null</code> to disable automatic saving
+	 */
+	public static String autoSaveName = "default";
 
 	/**
 	 * Logging tag
@@ -59,6 +66,26 @@ public class Preflect
 	 */
 	public static void configure( Activity returnTo, Object... roots )
 	{
+		configure( returnTo, true, true, roots );
+	}
+
+	/**
+	 * @param returnTo
+	 *           The activity to return to when we are done configuring
+	 * @param showPersist
+	 *           When <code>true</code>, the user will be able manually
+	 *           save multiple different configurations. Default is
+	 *           <code>true</code>
+	 * @param showConfirm
+	 *           When <code>true</code>, the user will have to confirm
+	 *           or cancel configuration changes before leaving the
+	 *           generated {@link PreferenceActivity}.
+	 * @param roots
+	 *           The (annotated) objects to configure.
+	 */
+	public static void configure( Activity returnTo, boolean showPersist,
+			boolean showConfirm, Object... roots )
+	{
 		if( roots == null )
 		{
 			Log.e( LOG_TAG, "Attempt made to configure null roots. "
@@ -71,6 +98,9 @@ public class Preflect
 			Intent i = new Intent( returnTo, PreflectActivity.class );
 			i.putExtra( Util.CONF_TAG, Extract.extract( roots ).toString() );
 			i.putExtra( Util.RETURNTO_TAG, returnTo.getClass().getName() );
+			i.putExtra( Util.SHOW_PERSIST_MENU, showPersist );
+			i.putExtra( Util.SHOW_CONFIRM_MENU, showConfirm );
+
 			returnTo.startActivityForResult( i, ACTIVITY_REQUEST_FLAG );
 		}
 	}
@@ -87,8 +117,10 @@ public class Preflect
 	 *           from {@link Activity}.onActivityResult()
 	 * @param configTargets
 	 *           roots of the object trees to apply configurations to
+	 * @return <code>true</code> if the configuration was applied,
+	 *         <code>false</code> otherwise
 	 */
-	public static void onActivityResult( int requestCode, int resultCode, Intent data,
+	public static boolean onActivityResult( int requestCode, int resultCode, Intent data,
 			Object... configTargets )
 	{
 		if( configTargets.length == 0 )
@@ -104,7 +136,9 @@ public class Preflect
 			Log.i( LOG_TAG, "Applying configuration" );
 			try
 			{
-				Apply.apply( new JSONObject( data.getStringExtra( Util.CONF_TAG ) ), configTargets );
+				Apply.apply( new JSONObject( data.getStringExtra( Util.CONF_TAG ) ),
+						configTargets );
+				return true;
 			}
 			catch( JSONException e )
 			{
@@ -112,6 +146,8 @@ public class Preflect
 						"Problem parsing json data : " + data.getStringExtra( "conf" ), e );
 			}
 		}
+
+		return false;
 	}
 
 	/**
@@ -143,8 +179,10 @@ public class Preflect
 				}
 				catch( JSONException e )
 				{
-					Log.e( LOG_TAG,
-							"Problem parsing json data : " + data.getStringExtra( Util.CONF_TAG ), e );
+					Log.e(
+							LOG_TAG,
+							"Problem parsing json data : " + data.getStringExtra( Util.CONF_TAG ),
+							e );
 				}
 			}
 		}

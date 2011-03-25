@@ -73,6 +73,18 @@ class Util
 	 */
 	static final String RETURNTO_TAG = "returnto";
 
+	/**
+	 * Tag for the flag to indicate if we should let the user save
+	 * multiple configurations
+	 */
+	static final String SHOW_PERSIST_MENU = "showpersist";
+
+	/**
+	 * Tag for the flag to indicate if we should make the user confirm
+	 * configuration changes
+	 */
+	static final String SHOW_CONFIRM_MENU = "showconfirm";
+
 	private Util()
 	{
 	}

@@ -47,6 +47,8 @@ public class PreflectActivity extends PreferenceActivity
 	 */
 	private String returnTo;
 
+	private boolean showPersist, showConfirm;
+
 	@Override
 	protected void onCreate( Bundle savedInstanceState )
 	{
@@ -54,6 +56,9 @@ public class PreflectActivity extends PreferenceActivity
 
 		String input = ( String ) getIntent().getSerializableExtra( Util.CONF_TAG );
 		returnTo = ( String ) getIntent().getSerializableExtra( Util.RETURNTO_TAG );
+
+		showPersist = getIntent().getBooleanExtra( Util.SHOW_PERSIST_MENU, true );
+		showConfirm = getIntent().getBooleanExtra( Util.SHOW_CONFIRM_MENU, true );
 
 		try
 		{
@@ -73,7 +78,15 @@ public class PreflectActivity extends PreferenceActivity
 	@Override
 	public void onBackPressed()
 	{
-		openOptionsMenu();
+		if( showConfirm )
+		{
+			openOptionsMenu();
+		}
+		else
+		{
+			setResult( RESULT_OK, new Intent().putExtra( "conf", json.toString() ) );
+			finish();
+		}
 	}
 
 	@Override
@@ -82,12 +95,15 @@ public class PreflectActivity extends PreferenceActivity
 		apply = menu.add( "Apply" );
 		apply.setIcon( android.R.drawable.ic_menu_set_as );
 
-		SubMenu persist = menu.addSubMenu( "Persist" );
-		persist.setIcon( android.R.drawable.ic_menu_save );
+		if( showPersist )
+		{
+			SubMenu persist = menu.addSubMenu( "Persist" );
+			persist.setIcon( android.R.drawable.ic_menu_save );
 
-		save = persist.add( "Save" );
-		load = persist.add( "Load" );
-		delete = persist.add( "Delete" );
+			save = persist.add( "Save" );
+			load = persist.add( "Load" );
+			delete = persist.add( "Delete" );
+		}
 
 		cancel = menu.add( "Cancel" );
 		cancel.setIcon( android.R.drawable.ic_menu_delete );

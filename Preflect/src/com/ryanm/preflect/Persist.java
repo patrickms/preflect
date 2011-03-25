@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -26,6 +27,41 @@ public class Persist
 	private static SharedPreferences getPrefs( Activity act, String owner )
 	{
 		return act.getSharedPreferences( owner + ".config", Context.MODE_WORLD_WRITEABLE );
+	}
+
+	/**
+	 * Call this from your activity in {@link Activity}
+	 * .onActivityResult() as an alternative to
+	 * {@link Preflect#onActivityResult(int, int, Intent, Object...)}
+	 * to apply a configuration <b>and</b> to automatically save the
+	 * configuration
+	 * 
+	 * @param requestCode
+	 *           from {@link Activity}.onActivityResult()
+	 * @param resultCode
+	 *           from {@link Activity}.onActivityResult()
+	 * @param data
+	 *           from {@link Activity}.onActivityResult()
+	 * @param owner
+	 *           The {@link Activity} that will own the saved
+	 *           configuration
+	 * @param autoSaveName
+	 *           The name of the saved configuration
+	 * @param configTargets
+	 *           roots of the object trees to apply configurations to
+	 * @return <code>true</code> if the configuration was applied,
+	 *         <code>false</code> otherwise
+	 */
+	public static boolean onActivityResult( int requestCode, int resultCode, Intent data,
+			Activity owner, String autoSaveName, Object... configTargets )
+	{
+		if( Preflect.onActivityResult( requestCode, resultCode, data, configTargets ) )
+		{
+			Persist.save( owner, autoSaveName, configTargets );
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
