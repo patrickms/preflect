@@ -8,8 +8,12 @@ import com.ryanm.preflect.annote.Variable;
  * 
  * @author ryanm
  */
-public class StructuralError extends Error {
-	StructuralError(String reason) {
-		super(reason);
+public class StructuralError extends Error
+{
+	private static final long serialVersionUID = 1L;
+
+	StructuralError( final String reason )
+	{
+		super( reason );
 	}
 }

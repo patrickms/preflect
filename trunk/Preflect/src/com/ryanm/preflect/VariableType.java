@@ -1,4 +1,3 @@
-
 package com.ryanm.preflect;
 
 import java.util.HashMap;
@@ -25,11 +24,10 @@ import com.ryanm.preflect.imp.StringType;
 import com.ryanm.preflect.imp.VoidType;
 
 /**
- * Extend this to define new variable types. You'll need code to
- * encode an decode a value to and from strings, construct an
- * appropriate {@link Preference}, and optionally to validate/format
- * user input. Remember to {@link #register(VariableType)} your new
- * variable type or it won't be used
+ * Extend this to define new variable types. You'll need code to encode an
+ * decode a value to and from strings, construct an appropriate
+ * {@link Preference}, and optionally to validate/format user input. Remember to
+ * {@link #register(VariableType)} your new variable type or it won't be used
  * 
  * @author ryanm
  * @param <T>
@@ -45,7 +43,7 @@ public abstract class VariableType<T>
 	/**
 	 * @param type
 	 */
-	protected VariableType( Class<? extends T> type )
+	protected VariableType( final Class<? extends T> type )
 	{
 		this.type = type;
 	}
@@ -55,8 +53,8 @@ public abstract class VariableType<T>
 	 * 
 	 * @param value
 	 *           The value to encode
-	 * @return The String encoding for the value, or null if encoding
-	 *         was not possible
+	 * @return The String encoding for the value, or null if encoding was not
+	 *         possible
 	 */
 	public abstract String encode( T value );
 
@@ -71,7 +69,8 @@ public abstract class VariableType<T>
 	 * @throws ParseException
 	 *            If there is a problem parsing the encoded string
 	 */
-	public abstract T decode( String encoded, Class runtimeType ) throws ParseException;
+	public abstract T decode( String encoded, Class runtimeType )
+			throws ParseException;
 
 	/**
 	 * Gets a widget to control the supplied variable
@@ -82,8 +81,8 @@ public abstract class VariableType<T>
 	 */
 	final Preference getPreference( final Context context, final Variable var )
 	{
-		String value = var.json.optString( Util.VALUE );
-		Preference p = buildPreference( context, var.type, value );
+		final String value = var.json.optString( Util.VALUE );
+		final Preference p = buildPreference( context, var.type, value );
 		p.setTitle( var.name );
 		p.setSummary( var.description );
 		p.setOrder( var.order );
@@ -95,7 +94,7 @@ public abstract class VariableType<T>
 
 		if( p instanceof DialogPreference )
 		{
-			DialogPreference dp = ( DialogPreference ) p;
+			final DialogPreference dp = ( DialogPreference ) p;
 			dp.setDialogTitle( var.name );
 
 			if( var.readonly )
@@ -104,22 +103,24 @@ public abstract class VariableType<T>
 			}
 		}
 
-		p.setOnPreferenceChangeListener( new OnPreferenceChangeListener() {
+		p.setOnPreferenceChangeListener( new OnPreferenceChangeListener(){
 			@Override
-			public boolean onPreferenceChange( Preference preference, Object newValue )
+			public boolean onPreferenceChange( final Preference preference,
+					final Object newValue )
 			{
 				try
 				{
 					var.json.put( Util.VALUE, formatInput( newValue ) );
 					return true;
 				}
-				catch( JSONException e )
+				catch( final JSONException e )
 				{
 					Log.e( Preflect.LOG_TAG, "shouldn't happen", e );
 				}
-				catch( Exception e )
+				catch( final Exception e )
 				{
-					Toast.makeText( context, e.getMessage(), Toast.LENGTH_SHORT ).show();
+					Toast.makeText( context, e.getMessage(), Toast.LENGTH_SHORT )
+							.show();
 
 					Log.e( Preflect.LOG_TAG, "Problem setting value", e );
 				}
@@ -132,16 +133,15 @@ public abstract class VariableType<T>
 	}
 
 	/**
-	 * Build a widget to control the supplied variable. Variable title,
-	 * summary, order and a default input formatting action are handled
-	 * for you.
+	 * Build a widget to control the supplied variable. Variable title, summary,
+	 * order and a default input formatting action are handled for you.
 	 * 
 	 * @see VariableType#formatInput(Object)
 	 * @param context
 	 *           Well who'd have thought it! A context!
 	 * @param type
-	 *           runtime type of the variable. Needed to get enum
-	 *           values, not much use otherwise
+	 *           runtime type of the variable. Needed to get enum values, not
+	 *           much use otherwise
 	 * @param value
 	 *           The current value of the variable
 	 * @return An appropriate {@link View}
@@ -150,18 +150,18 @@ public abstract class VariableType<T>
 			final String value );
 
 	/**
-	 * Default format behaviour, just does toString(). Override if that
-	 * doesn't work for you. Throw an exception to indicate trouble,
-	 * the exception message will be {@link Toast}ed at the user
+	 * Default format behaviour, just does toString(). Override if that doesn't
+	 * work for you. Throw an exception to indicate trouble, the exception
+	 * message will be {@link Toast}ed at the user
 	 * 
 	 * @param input
-	 *           The user input, fresh from the {@link Preference}
-	 *           created in
+	 *           The user input, fresh from the {@link Preference} created in
 	 *           {@link #buildPreference(Context, Class, String)}
-	 * @return A properly-formatted value that won't cause trouble on
-	 *         the other end
+	 * @return A properly-formatted value that won't cause trouble on the other
+	 *         end
 	 */
-	protected String formatInput( Object input )
+	@SuppressWarnings( "static-method" )
+	protected String formatInput( final Object input )
 	{
 		return input.toString();
 	}
@@ -186,7 +186,7 @@ public abstract class VariableType<T>
 	 * 
 	 * @param varType
 	 */
-	public static void register( VariableType varType )
+	public static void register( final VariableType varType )
 	{
 		types.put( varType.type, varType );
 	}

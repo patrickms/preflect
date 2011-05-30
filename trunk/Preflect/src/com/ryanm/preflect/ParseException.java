@@ -1,18 +1,18 @@
-
 package com.ryanm.preflect;
 
 /**
- * Use this to indicate failure when codec-ing in your
- * {@link VariableType}
+ * Use this to indicate failure when codec-ing in your {@link VariableType}
  * 
  * @author ryanm
  */
 public class ParseException extends Exception
 {
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * @param message
 	 */
-	public ParseException( String message )
+	public ParseException( final String message )
 	{
 		super( message );
 	}
@@ -20,7 +20,7 @@ public class ParseException extends Exception
 	/**
 	 * @param cause
 	 */
-	public ParseException( Throwable cause )
+	public ParseException( final Throwable cause )
 	{
 		super( cause );
 	}
@@ -29,7 +29,7 @@ public class ParseException extends Exception
 	 * @param message
 	 * @param cause
 	 */
-	public ParseException( String message, Throwable cause )
+	public ParseException( final String message, final Throwable cause )
 	{
 		super( message, cause );
 	}
