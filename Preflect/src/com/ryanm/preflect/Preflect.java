@@ -1,4 +1,3 @@
-
 package com.ryanm.preflect;
 
 import java.util.LinkedList;
@@ -15,25 +14,24 @@ import android.util.Log;
 import com.ryanm.preflect.annote.Variable;
 
 /**
- * Handy utility for manipulating object trees that have been marked
- * up with {@link Variable} annotations
+ * Handy utility for manipulating object trees that have been marked up with
+ * {@link Variable} annotations
  * 
  * @author ryanm
  */
 public class Preflect
 {
 	/**
-	 * When <code>true</code>, a {@link StructuralError} will be thrown
-	 * if a private field or method is encountered with a
-	 * {@link Variable} annotation, when <code>false</code>, no error
-	 * is raised and the variable is ignored. Default value is
-	 * <code>true</code>
+	 * When <code>true</code>, a {@link StructuralError} will be thrown if a
+	 * private field or method is encountered with a {@link Variable} annotation,
+	 * when <code>false</code>, no error is raised and the variable is ignored.
+	 * Default value is <code>true</code>
 	 */
 	public static boolean errorOnNonPublicVariables = true;
 
 	/**
-	 * The name under which applied configurations are automatically
-	 * saved. Set to <code>null</code> to disable automatic saving
+	 * The name under which applied configurations are automatically saved. Set
+	 * to <code>null</code> to disable automatic saving
 	 */
 	public static String autoSaveName = "default";
 
@@ -44,8 +42,8 @@ public class Preflect
 
 	/**
 	 * The activity request flag used in
-	 * {@link Activity#startActivityForResult(Intent, int)} when
-	 * launching the configuration activity (value = 266344)
+	 * {@link Activity#startActivityForResult(Intent, int)} when launching the
+	 * configuration activity (value = 266344)
 	 */
 	public static final int ACTIVITY_REQUEST_FLAG = 266344;
 
@@ -60,20 +58,20 @@ public class Preflect
 	 * @param returnTo
 	 *           The activity to return to when we are done configuring
 	 * @param showPersist
-	 *           When <code>true</code>, the user will be able manually
-	 *           save multiple different configurations.
+	 *           When <code>true</code>, the user will be able manually save
+	 *           multiple different configurations.
 	 * @param showConfirm
-	 *           When <code>true</code>, the user will have to confirm
-	 *           or cancel configuration changes before leaving the
-	 *           generated {@link PreferenceActivity}. This might be
-	 *           useful if the preference hierarchy is deep, and the
-	 *           user risks prematurely leaving the activity by
-	 *           accident
+	 *           When <code>true</code>, the user will have to confirm or cancel
+	 *           configuration changes before leaving the generated
+	 *           {@link PreferenceActivity}. This might be useful if the
+	 *           preference hierarchy is deep and the user risks prematurely
+	 *           leaving the activity by accident
 	 * @param roots
 	 *           The (annotated) objects to configure.
 	 */
-	public static void configure( Activity returnTo, boolean showPersist,
-			boolean showConfirm, Object... roots )
+	public static void configure( final Activity returnTo,
+			final boolean showPersist, final boolean showConfirm,
+			final Object... roots )
 	{
 		if( roots == null )
 		{
@@ -84,7 +82,7 @@ public class Preflect
 		{
 			Log.i( LOG_TAG, "Launching configuration activity" );
 
-			Intent i = new Intent( returnTo, PreflectActivity.class );
+			final Intent i = new Intent( returnTo, PreflectActivity.class );
 			i.putExtra( Util.CONF_TAG, Extract.extract( roots ).toString() );
 			i.putExtra( Util.RETURNTO_TAG, returnTo.getClass().getName() );
 			i.putExtra( Util.SHOW_PERSIST_MENU, showPersist );
@@ -95,8 +93,8 @@ public class Preflect
 	}
 
 	/**
-	 * Call this from your activity in {@link Activity}
-	 * .onActivityResult() to apply a configuration
+	 * Call this from your activity in {@link Activity} .onActivityResult() to
+	 * apply a configuration
 	 * 
 	 * @param requestCode
 	 *           from {@link Activity}.onActivityResult()
@@ -109,8 +107,9 @@ public class Preflect
 	 * @return <code>true</code> if the configuration was applied,
 	 *         <code>false</code> otherwise
 	 */
-	public static boolean onActivityResult( int requestCode, int resultCode, Intent data,
-			Object... configTargets )
+	public static boolean
+			onActivityResult( final int requestCode, final int resultCode,
+					final Intent data, final Object... configTargets )
 	{
 		if( configTargets.length == 0 )
 		{
@@ -125,14 +124,17 @@ public class Preflect
 			Log.i( LOG_TAG, "Applying configuration" );
 			try
 			{
-				Apply.apply( new JSONObject( data.getStringExtra( Util.CONF_TAG ) ),
+				Apply.apply(
+						new JSONObject( data.getStringExtra( Util.CONF_TAG ) ),
 						configTargets );
 				return true;
 			}
-			catch( JSONException e )
+			catch( final JSONException e )
 			{
-				Log.e( LOG_TAG,
-						"Problem parsing json data : " + data.getStringExtra( "conf" ), e );
+				Log.e(
+						LOG_TAG,
+						"Problem parsing json data : " + data.getStringExtra( "conf" ),
+						e );
 			}
 		}
 
@@ -140,11 +142,11 @@ public class Preflect
 	}
 
 	/**
-	 * Call this from your {@link Activity}.onActivityResult() instead
-	 * of {@link #onActivityResult(int, int, Intent, Object...)} to
-	 * save a configuration for later application. This is useful if
-	 * your configuration changes need to be done in a particular
-	 * thread like, for example, OpenGL stuff
+	 * Call this from your {@link Activity}.onActivityResult() instead of
+	 * {@link #onActivityResult(int, int, Intent, Object...)} to save a
+	 * configuration for later application. This is useful if your configuration
+	 * changes need to be done in a particular thread like, for example, OpenGL
+	 * stuff
 	 * 
 	 * @param requestCode
 	 *           from {@link Activity}.onActivityResult()
@@ -153,7 +155,8 @@ public class Preflect
 	 * @param data
 	 *           from {@link Activity}.onActivityResult()
 	 */
-	public static void deferActivityResult( int requestCode, int resultCode, Intent data )
+	public static void deferActivityResult( final int requestCode,
+			final int resultCode, final Intent data )
 	{
 		if( requestCode == Preflect.ACTIVITY_REQUEST_FLAG
 				&& resultCode == Activity.RESULT_OK )
@@ -163,15 +166,16 @@ public class Preflect
 				Log.i( LOG_TAG, "Deferring configuration" );
 				try
 				{
-					JSONObject json = new JSONObject( data.getStringExtra( Util.CONF_TAG ) );
+					final JSONObject json =
+							new JSONObject( data.getStringExtra( Util.CONF_TAG ) );
 					deferredResults.add( new ConfigResult( json ) );
 				}
-				catch( JSONException e )
+				catch( final JSONException e )
 				{
 					Log.e(
 							LOG_TAG,
-							"Problem parsing json data : " + data.getStringExtra( Util.CONF_TAG ),
-							e );
+							"Problem parsing json data : "
+									+ data.getStringExtra( Util.CONF_TAG ), e );
 				}
 			}
 		}
@@ -184,7 +188,8 @@ public class Preflect
 	 * @param configTargets
 	 *           roots of the object trees to apply configurations to
 	 */
-	public static void applyDeferredConfigurations( Object... configTargets )
+	public static void applyDeferredConfigurations(
+			final Object... configTargets )
 	{
 		synchronized( deferredResults )
 		{
@@ -192,7 +197,7 @@ public class Preflect
 			{
 				Log.i( LOG_TAG, "Applying deferred configuration" );
 
-				ConfigResult cr = deferredResults.poll();
+				final ConfigResult cr = deferredResults.poll();
 				Apply.apply( cr.config, configTargets );
 			}
 		}
@@ -207,7 +212,7 @@ public class Preflect
 	{
 		private final JSONObject config;
 
-		private ConfigResult( JSONObject config )
+		private ConfigResult( final JSONObject config )
 		{
 			this.config = config;
 		}
